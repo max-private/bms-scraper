@@ -787,7 +787,9 @@ class BookMyShowScraper:
         max_extra = (self.cfg.max_dates_per_movie or 7) - len(dates_scraped)
 
         # Find date selector elements (IDs are dateCodes like 20260301)
-        date_elements = page.query_selector_all("[id^='2026'], [id^='2025']")
+        _year = datetime.now(timezone.utc).year
+        _date_selector = ", ".join(f"[id^='{y}']" for y in range(_year, _year + 2))
+        date_elements = page.query_selector_all(_date_selector)
         if not date_elements:
             return records
 
